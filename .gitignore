@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Environment files (keep .env.example templates)
+.env
+.env.local
+.env.development
+.env.production
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+pino-*.log
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Jest cache
+.jest-cache/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code tooling
+skills-lock.json
+.agents/
