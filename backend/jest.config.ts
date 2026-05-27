@@ -5,9 +5,6 @@ const config: Config = {
   testEnvironment: 'node',
   rootDir: '.',
   testMatch: ['**/tests/**/*.test.ts'],
-  setupFilesAfterEnv: ['./tests/setup.ts'],
-  globalSetup: './tests/globalSetup.ts',
-  globalTeardown: './tests/globalTeardown.ts',
   testTimeout: 30000,
 };
 
