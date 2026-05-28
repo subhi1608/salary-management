@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi, type Mock } from 'vitest';
 
 vi.mock('../../hooks/useInsights', () => ({
@@ -35,5 +36,22 @@ describe('SalaryByJobTitleTable', () => {
     mockHook.mockReturnValue({ data: [], isLoading: false });
     render(<SalaryByJobTitleTable />);
     expect(screen.getByText(/no salary data for/i)).toBeInTheDocument();
+  });
+
+  it('defaults to US and passes it to useSalaryByJobTitle', () => {
+    mockHook.mockReturnValue({ data: [], isLoading: false });
+    render(<SalaryByJobTitleTable />);
+    expect(mockHook).toHaveBeenCalledWith('US');
+    expect(screen.getByText('No salary data for US')).toBeInTheDocument();
+  });
+
+  it('calls useSalaryByJobTitle with new country when country filter changes', async () => {
+    mockHook.mockReturnValue({ data: [], isLoading: false });
+    render(<SalaryByJobTitleTable />);
+    
+    const countryTrigger = screen.getByRole('combobox', { name: /country/i });
+    await userEvent.click(countryTrigger);
+    await userEvent.click(screen.getByRole('option', { name: 'UK' }));
+    expect(mockHook).toHaveBeenCalledWith('UK');
   });
 });

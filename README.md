@@ -11,7 +11,6 @@ Internal HR and payroll management tool. Manage employees across countries, trac
 - [Prerequisites](#prerequisites)
 - [Option A — Local PostgreSQL](#option-a--local-postgresql)
 - [Option B — PostgreSQL via Docker (no local install needed)](#option-b--postgresql-via-docker-no-local-install-needed)
-- [Option C — Full Docker Compose (everything containerised)](#option-c--full-docker-compose-everything-containerised)
 - [Seeding](#seeding)
 - [Running the app](#running-the-app)
 - [Default credentials](#default-credentials)
@@ -140,60 +139,6 @@ npm run seed        # optional — loads 10,000 employees
 docker stop salary-pg
 docker start salary-pg   # to restart it later
 ```
-
----
-
-## Option C — Full Docker Compose (everything containerised)
-
-Use this to run PostgreSQL + backend + frontend all at once with a single command.
-
-### 1. Set secrets
-
-```bash
-cp .env.example .env
-```
-
-Open `.env` and set both secrets (any random strings, min 32 chars each):
-
-### 2. Build and start
-
-```bash
-docker-compose up --build
-```
-
-First run takes a few minutes to build the images. Subsequent starts are fast:
-
-```bash
-docker-compose up
-```
-
-### 3. Create the admin user
-
-```bash
-docker-compose exec backend node dist/seeds/createAdmin.js
-```
-
-### 4. (Optional) Seed 10,000 employees
-
-```bash
-docker-compose exec backend node dist/seeds/seed.js
-```
-
-### 5. Access the app
-
-| Service        | URL                          |
-| -------------- | ---------------------------- |
-| Frontend       | http://localhost:3000        |
-| Backend health | http://localhost:3001/health |
-
-### 6. Stop
-
-```bash
-docker-compose down          # stop containers, keep database volume
-docker-compose down -v       # stop containers AND delete all data
-```
-
----
 
 ## Seeding
 

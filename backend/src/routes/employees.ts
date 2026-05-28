@@ -9,7 +9,7 @@ export function createEmployeeRouter(pool: Pool): Router {
 
   router.use(authenticate);
 
-  // /departments must be before /:id to avoid route collision
+  
   router.get('/departments', async (_req, res, next) => {
     try {
       const result = await pool.query('SELECT id, name FROM departments ORDER BY name');
