@@ -7,6 +7,14 @@ import { AppError } from '../../../src/types';
 jest.mock('../../../src/repositories/userRepository');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
+jest.mock('../../../src/config', () => ({
+  config: {
+    jwtSecret: 'test-jwt-secret',
+    jwtRefreshSecret: 'test-jwt-refresh-secret',
+    jwtExpiresIn: '15m',
+    jwtRefreshExpiresIn: '7d',
+  },
+}));
 
 const mockPool = {} as import('pg').Pool;
 
