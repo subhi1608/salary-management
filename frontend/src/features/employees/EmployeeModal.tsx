@@ -43,7 +43,12 @@ export function EmployeeModal({ open, mode, employee, departments, onClose, onSu
   });
 
   useEffect(() => {
-    if (employee) reset({ ...employee });
+    if (employee) reset({
+      ...employee,
+      hire_date: employee.hire_date
+        ? String(employee.hire_date).slice(0, 10)
+        : new Date().toISOString().split('T')[0],
+    });
     else reset({
       employment_type: 'full_time',
       country: 'US',
@@ -101,9 +106,13 @@ export function EmployeeModal({ open, mode, employee, departments, onClose, onSu
             </TextField>
           </Grid>
           <Grid item xs={6}>
-            <TextField fullWidth label="Hire Date" type="date" InputLabelProps={{ shrink: true }}
-              inputProps={{ 'aria-label': 'Hire Date' }}
-              {...register('hire_date')} error={!!errors.hire_date} helperText={errors.hire_date?.message} />
+            <Controller name="hire_date" control={control} render={({ field }) => (
+              <TextField fullWidth label="Hire Date" type="date" InputLabelProps={{ shrink: true }}
+                inputProps={{ 'aria-label': 'Hire Date' }}
+                {...field}
+                value={field.value ?? ''}
+                error={!!errors.hire_date} helperText={errors.hire_date?.message} />
+            )} />
           </Grid>
         </Grid>
       </DialogContent>

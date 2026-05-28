@@ -3,6 +3,7 @@ import { Alert, Button, MenuItem, Snackbar, Stack, TextField, Typography } from 
 import { PageLayout } from '../components/PageLayout';
 import { EmployeeTable } from '../features/employees/EmployeeTable';
 import { EmployeeModal } from '../features/employees/EmployeeModal';
+import { ConfirmDeactivateModal } from '../features/employees/ConfirmDeactivateModal';
 import {
   useEmployees, useCreateEmployee, useUpdateEmployee,
   useDeactivateEmployee, useDepartments,
@@ -16,6 +17,7 @@ export default function Employees() {
   const [filters, setFilters] = useState<EmployeeFilters>({ page: 1, limit: DEFAULT_PAGE_SIZE, is_active: true });
   const [searchInput, setSearchInput] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [pendingDeactivate, setPendingDeactivate] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -34,6 +36,14 @@ export default function Employees() {
 
   const notify = (message: string, severity: 'success' | 'error' = 'success') =>
     setSnack({ open: true, message, severity });
+
+  const handleConfirmDeactivate = () => {
+    if (!pendingDeactivate) return;
+    deactivateMutation.mutate(pendingDeactivate.id, {
+      onSuccess: () => { notify('Employee deactivated.'); setPendingDeactivate(null); },
+      onError: () => { notify('Failed to deactivate employee.', 'error'); setPendingDeactivate(null); },
+    });
+  };
 
   const handleSubmit = async (values: CreateEmployeeInput) => {
     try {
@@ -87,10 +97,17 @@ export default function Employees() {
         loading={isLoading}
         onPageChange={(page, pageSize) => setFilters(f => ({ ...f, page, limit: pageSize }))}
         onEdit={emp => { setEditEmployee(emp); setModalOpen(true); }}
-        onDeactivate={id => deactivateMutation.mutate(id, {
-          onSuccess: () => notify('Employee deactivated.'),
-          onError: () => notify('Failed to deactivate employee.', 'error'),
-        })}
+        onDeactivate={id => {
+          const emp = data?.employees.find(e => e.id === id);
+          setPendingDeactivate({ id, name: emp?.full_name ?? 'this employee' });
+        }}
+      />
+      <ConfirmDeactivateModal
+        open={pendingDeactivate !== null}
+        employeeName={pendingDeactivate?.name ?? ''}
+        isLoading={deactivateMutation.isPending}
+        onCancel={() => setPendingDeactivate(null)}
+        onConfirm={handleConfirmDeactivate}
       />
       <EmployeeModal
         open={modalOpen}

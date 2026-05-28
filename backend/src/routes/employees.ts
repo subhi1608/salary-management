@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { Pool } from 'pg';
 import { authenticate } from '../middleware/authenticate';
 import { createEmployeeController } from '../controllers/employeeController';
+import { findAllDepartments } from '../repositories/employeeRepository';
 
 export function createEmployeeRouter(pool: Pool): Router {
   const router = Router();
@@ -12,8 +13,8 @@ export function createEmployeeRouter(pool: Pool): Router {
   
   router.get('/departments', async (_req, res, next) => {
     try {
-      const result = await pool.query('SELECT id, name FROM departments ORDER BY name');
-      res.json({ data: result.rows });
+      const departments = await findAllDepartments(pool);
+      res.json({ data: departments });
     } catch (err) { next(err); }
   });
 
