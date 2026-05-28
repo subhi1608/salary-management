@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
+import { router } from '../router';
 
 export const apiClient = axios.create({ baseURL: `${import.meta.env.VITE_API_URL || '/api/v1'}`, withCredentials: true });
 
@@ -23,7 +24,7 @@ apiClient.interceptors.response.use(
         return apiClient(original);
       } catch {
         useAuthStore.getState().clearAuth();
-        window.location.href = '/login';
+        router.navigate({ to: '/login' });
       }
     }
     return Promise.reject(error);

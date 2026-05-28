@@ -14,7 +14,7 @@ export async function loginApi(
 }
 
 export async function refreshApi(): Promise<{ accessToken: string; user: User }> {
-  // Use plain axios (not apiClient) to avoid triggering the 401 interceptor recursively
+  
   const res = await axios.post<ApiResponse<{ accessToken: string; user: User }>>(
     '/api/v1/auth/refresh',
     {},

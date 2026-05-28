@@ -16,8 +16,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ── existing tests (preserved) ──────────────────────────────────────────────
-
 describe('normaliseSalaryStats', () => {
   it('rounds avg_salary to 2 decimal places', () => {
     const result = normaliseSalaryStats([
@@ -33,8 +31,6 @@ describe('normaliseSalaryStats', () => {
     expect(normaliseSalaryStats([])).toEqual([]);
   });
 });
-
-// ── new tests ────────────────────────────────────────────────────────────────
 
 describe('normaliseJobTitleStats', () => {
   it('parses avg_salary and employee_count from raw DB strings', () => {

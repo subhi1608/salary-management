@@ -44,8 +44,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// ── existing tests (preserved) ──────────────────────────────────────────────
-
 describe('buildEmployeeFiltersQuery', () => {
   it('returns base query with no filters', () => {
     const { where, params } = buildEmployeeFiltersQuery({});
@@ -78,8 +76,6 @@ describe('buildEmployeeFiltersQuery', () => {
     expect(params).toEqual(['US', true]);
   });
 });
-
-// ── new tests ────────────────────────────────────────────────────────────────
 
 describe('listEmployees', () => {
   it('calls findEmployees with filters and pagination and returns the result', async () => {

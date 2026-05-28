@@ -73,6 +73,11 @@ export async function updateEmployee(
   return result.rows[0] ? mapRow(result.rows[0]) : null;
 }
 
+export async function findAllDepartments(pool: Pool): Promise<{ id: number; name: string }[]> {
+  const result = await pool.query('SELECT id, name FROM departments ORDER BY name');
+  return result.rows;
+}
+
 export async function softDeleteEmployee(pool: Pool, id: string): Promise<Employee | null> {
   const result = await pool.query(
     `UPDATE employees SET is_active = false, termination_date = CURRENT_DATE, updated_at = NOW()
